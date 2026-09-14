@@ -1,0 +1,42 @@
+name: Publish workshop checkpoints
+on:
+  push:
+    branches: [workshop-solution]
+    paths:
+      - .github/workflows/checkpoint-tags.yml
+      - docs/checkpoint-refs.json
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: workshop-checkpoint-tags
+  cancel-in-progress: false
+jobs:
+  tags:
+    if: github.repository == 'glaucia86/codex-ai-pdlc-workshop' && github.ref == 'refs/heads/workshop-solution'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - name: Publish immutable tags from the reviewed manifest
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          import { execFileSync, spawnSync } from 'node:child_process';
+          const refs = JSON.parse(readFileSync('docs/checkpoint-refs.json', 'utf8'));
+          const names = ['starter-v1.0.0', 'checkpoint-01', 'checkpoint-02', 'checkpoint-03', 'checkpoint-04'];
+          if (Object.keys(refs).length !== names.length) throw new Error('Unexpected checkpoint manifest');
+          for (const name of names) {
+            const sha = refs[name];
+            if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error(`Invalid commit for ${name}`);
+            execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`]);
+            const existing = spawnSync('git', ['rev-parse', '--verify', `refs/tags/${name}^{commit}`], { encoding: 'utf8' });
+            if (existing.status === 0) {
+              if (existing.stdout.trim() !== sha) throw new Error(`Refusing to move existing tag ${name}`);
+            } else {
+              execFileSync('git', ['tag', name, sha]);
+            }
+          }
+          execFileSync('git', ['push', '--atomic', 'origin', ...names.map(name => `refs/tags/${name}`)], { stdio: 'inherit' });
+          JS

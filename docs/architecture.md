@@ -34,3 +34,7 @@ Testes de regras e API usam diretórios temporários próprios; os testes pelo n
 ## Evolução no workshop
 
 O starter armazena `schemaVersion: 1`. A história de aprovação deverá definir como ler esses dados ao introduzir novos campos, preservar o histórico e tratar as demandas já iniciadas. A referência completa fica em outra branch.
+
+## Evolução nesta branch
+
+A solução acrescenta aprovação de orçamento conforme `docs/feature/spec.md`. O formato de trabalho é v2, com leitura compatível de v1 e gravação v2 na próxima mutação. A seed permanece v1 para demonstrar a migração. O histórico separa execução e avaliação. O arquivo não deve voltar ao starter após a migração; use pastas distintas para comparar versões.

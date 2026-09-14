@@ -4,7 +4,7 @@ Hands-on AI PDLC workshop with Codex: from PRD to implementation using a full-st
 
 **19 de setembro de 2026 · 10h–13h30 · Q&A 13h30–14h · Glaucia Lemos**
 
-Este é o **starter** do workshop. O Nexo é um portal fictício de demandas internas com criação, edição, busca, filtros, quadro por situação, histórico e perfis de demonstração. O exercício é adicionar aprovação de orçamento a um produto que já funciona.
+Esta é a **solução de referência** do workshop. Para começar o exercício, use `main` ou `starter-v1.0.0`. O Nexo é um portal fictício de demandas internas com criação, edição, busca, filtros, quadro por situação, histórico e perfis de demonstração. Nesta branch, a aprovação de orçamento está implementada. O [guia da instrutora](docs/instructor-guide.md) explica como conduzir a construção passo a passo.
 
 ![Quadro de demandas do Nexo](docs/images/portal.png)
 
@@ -15,7 +15,7 @@ Requisitos: **Node.js 24**, npm, Git e navegador. Prepare também seu acesso ao 
 Faça um fork e clone seu repositório. Para experimentar diretamente a base original:
 
 ```sh
-git clone https://github.com/glaucia86/codex-ai-pdlc-workshop.git
+git clone --branch workshop-solution https://github.com/glaucia86/codex-ai-pdlc-workshop.git
 cd codex-ai-pdlc-workshop
 npm ci
 npm run doctor
@@ -43,12 +43,12 @@ Leia a [preparação e solução de problemas](docs/preparation.md). No Windows,
 3. Crie sua branch de trabalho: `git switch -c feature/aprovacao-orcamento`.
 4. Acompanhe o PRD, a especificação, o contexto, a implementação, os testes e a revisão.
 
-| Referência                                                                                                               | Finalidade                                                      |
-| ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| `main` e `starter-v1.0.0`                                                                                                | Ponto de partida do exercício                                   |
-| [Guia da instrutora](https://github.com/glaucia86/codex-ai-pdlc-workshop/blob/workshop-solution/docs/instructor/guia.md) | Fala sugerida, demonstrações, prompts, resultados e recuperação |
-| [Solução de referência](https://github.com/glaucia86/codex-ai-pdlc-workshop/tree/workshop-solution)                      | Feature completa e documentos preenchidos                       |
-| [Checkpoints](docs/checkpoints.md)                                                                                       | Retomar uma etapa em uma cópia separada                         |
+| Referência                                                                                                                | Finalidade                                                      |
+| ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `main` e `starter-v1.0.0`                                                                                                 | Ponto de partida do exercício                                   |
+| [Guia da instrutora](https://github.com/glaucia86/codex-ai-pdlc-workshop/blob/workshop-solution/docs/instructor-guide.md) | Fala sugerida, demonstrações, prompts, resultados e recuperação |
+| [Solução de referência](https://github.com/glaucia86/codex-ai-pdlc-workshop/tree/workshop-solution)                       | Feature completa e documentos preenchidos                       |
+| [Checkpoints](docs/checkpoints.md)                                                                                        | Retomar uma etapa em uma cópia separada                         |
 
 ## Comandos
 

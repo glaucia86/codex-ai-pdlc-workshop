@@ -30,3 +30,9 @@ Ao clonar uma tag, o Git pode informar que você está em `detached HEAD`. O com
 Para outro ponto, substitua `checkpoint-01` pelo nome desejado e use uma nova pasta. Seus arquivos da tentativa anterior permanecem intactos. Não copie o arquivo JSON da solução de volta para o starter; cada cópia inicia com dados compatíveis.
 
 Se quiser enviar a retomada ao seu fork, confira os remotos e ajuste o destino para o seu repositório antes do push. Você não precisa publicar nada para acompanhar a prática local.
+
+## Manutenção das referências
+
+Na solução, `docs/checkpoint-refs.json` registra os commits publicados de cada etapa. O workflow **Publish workshop checkpoints** cria as tags com o token padrão do GitHub Actions e falha se uma tag existente apontar para outro commit; ele não move tags. A publicação fica restrita à branch `workshop-solution` do repositório original. Forks não executam essa publicação.
+
+As tags representam versões de aula. Correções posteriores devem preservar a rastreabilidade e usar uma nova versão quando alterarem um ponto de partida já distribuído.
