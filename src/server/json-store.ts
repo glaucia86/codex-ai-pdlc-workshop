@@ -8,7 +8,7 @@ import {
 } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
-import { databaseSchema, type Database } from "../domain/model";
+import { databaseSchema, readDatabase, type Database } from "../domain/model";
 
 function isCode(error: unknown, code: string) {
   return error instanceof Error && "code" in error && error.code === code;
@@ -63,7 +63,7 @@ export class JsonStore {
   private async load(path: string): Promise<Database> {
     const text = await readFile(path, "utf8");
     try {
-      return databaseSchema.parse(JSON.parse(text));
+      return readDatabase(JSON.parse(text));
     } catch {
       throw new StoreError(
         "Arquivo de dados inválido ou de outra versão. Os dados foram preservados; consulte a recuperação no README.",

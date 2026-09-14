@@ -7,9 +7,11 @@ import {
   Pencil,
   Wallet,
 } from "lucide-react";
-import type { Demand, User } from "../domain/model";
+import type { Command, Demand, User } from "../domain/model";
 import { formatAmount } from "../domain/currency";
 import { Avatar, Priority, StatusBadge } from "./shared";
+
+import { ApprovalPanel } from "./approval-panel";
 
 export type DetailProps = {
   demand: Demand;
@@ -19,6 +21,7 @@ export type DetailProps = {
   error: string;
   onEdit: () => void;
   onAdvance: () => void;
+  onCommand: (command: Command) => void;
 };
 export function DemandDetail({
   demand,
@@ -28,6 +31,7 @@ export function DemandDetail({
   error,
   onEdit,
   onAdvance,
+  onCommand,
 }: DetailProps) {
   const requester = users.find((user) => user.id === demand.requesterId)!;
   const own = actor.id === demand.requesterId;
@@ -53,6 +57,12 @@ export function DemandDetail({
         <strong>{formatAmount(demand.amountCents)}</strong>
         <small>Orçamento informado para esta demanda</small>
       </div>
+      <ApprovalPanel
+        demand={demand}
+        actor={actor}
+        busy={busy}
+        onCommand={onCommand}
+      />
       <dl className="detail-fields">
         <div>
           <dt>Solicitante</dt>

@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { databaseSchema, type DemandInput } from "../src/domain/model";
+import { readDatabase, type DemandInput } from "../src/domain/model";
 import { JsonStore } from "../src/server/json-store";
 
 export const sample: DemandInput = {
@@ -12,9 +12,7 @@ export const sample: DemandInput = {
   amountCents: 120_000,
 };
 export async function seed() {
-  return databaseSchema.parse(
-    JSON.parse(await readFile("data/seed.json", "utf8")),
-  );
+  return readDatabase(JSON.parse(await readFile("data/seed.json", "utf8")));
 }
 export async function temporaryStore() {
   const directory = await mkdtemp(join(tmpdir(), "codex-rio-test-"));

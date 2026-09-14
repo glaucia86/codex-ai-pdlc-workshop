@@ -952,3 +952,55 @@ fieldset {
     scroll-behavior: auto !important;
   }
 }
+
+.approval-panel {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.approval-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+.approval-heading h3 {
+  font-size: 15px;
+  margin: 0;
+}
+.approval-panel p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.approval-status {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.approval-status[data-status="Pendente"] {
+  color: #94610d;
+}
+.approval-status[data-status="Aprovada"] {
+  color: #137858;
+}
+.approval-status[data-status="Rejeitada"] {
+  color: #b64235;
+}
+[data-theme="dark"] .approval-status[data-status="Pendente"] {
+  color: #e5bd75;
+}
+[data-theme="dark"] .approval-status[data-status="Aprovada"] {
+  color: #7addb7;
+}
+[data-theme="dark"] .approval-status[data-status="Rejeitada"] {
+  color: #f99e92;
+}

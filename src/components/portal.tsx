@@ -368,6 +368,14 @@ export function Portal() {
                             <Building2 size={13} aria-hidden="true" />
                             {demand.area}
                           </span>
+                          {demand.status === "Nova" && (
+                            <span
+                              className="approval-status"
+                              data-status={demand.approval.status}
+                            >
+                              {demand.approval.status}
+                            </span>
+                          )}
                           <div className="card-bottom">
                             <strong>{formatAmount(demand.amountCents)}</strong>
                             <span title={`Solicitante: ${requester.name}`}>
@@ -422,6 +430,7 @@ export function Portal() {
               setEditing(current);
               setError("");
             }}
+            onCommand={(command) => void mutate(command)}
             onAdvance={() =>
               void mutate({
                 type: "advance",

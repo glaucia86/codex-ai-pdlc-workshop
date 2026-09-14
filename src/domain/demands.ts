@@ -2,12 +2,14 @@ import { randomUUID } from "node:crypto";
 import {
   commandSchema,
   DomainError,
+  emptyApproval,
   type Command,
   type Database,
   type Demand,
   type HistoryEvent,
   type User,
 } from "./model";
+import { formatAmount } from "./currency";
 
 export function addEvent(
   demand: Demand,
@@ -48,6 +50,8 @@ export function applyCommand(
       createdAt: now,
       updatedAt: now,
       history: [],
+      approval: emptyApproval(),
+      legacyExecution: false,
     };
     addEvent(demand, actor, "created", "Registrou a demanda.", now);
     db.demands.unshift(demand);
@@ -68,7 +72,29 @@ export function applyCommand(
       403,
     );
 
-  if (command.type === "update") {
+  if (command.type === "request-approval") {
+    if (
+      demand.status !== "Nova" ||
+      !["Não solicitada", "Rejeitada"].includes(demand.approval.status)
+    )
+      throw new DomainError(
+        "Esta demanda não pode ser enviada para aprovação neste estado.",
+        409,
+      );
+    demand.approval = {
+      ...emptyApproval(),
+      status: "Pendente",
+      amountCents: demand.amountCents,
+      requestedAt: now,
+    };
+    addEvent(
+      demand,
+      actor,
+      "approval-requested",
+      `Enviou ${formatAmount(demand.amountCents)} para aprovação.`,
+      now,
+    );
+  } else if (command.type === "update") {
     if (demand.status === "Concluída")
       throw new DomainError(
         "Demandas concluídas ficam disponíveis apenas para consulta.",
