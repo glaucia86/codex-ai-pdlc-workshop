@@ -75,6 +75,7 @@ export function DemandForm({
               name="amount"
               aria-label="Valor solicitado (R$)"
               aria-describedby="amount-help"
+              readOnly={Boolean(demand && demand.status !== "Nova")}
               inputMode="decimal"
               required
               defaultValue={
@@ -84,7 +85,11 @@ export function DemandForm({
               }
               placeholder="1200,00"
             />
-            <small id="amount-help">Sem separador de milhares.</small>
+            <small id="amount-help">
+              {demand && demand.status !== "Nova"
+                ? "Valor bloqueado após o início da execução."
+                : "Sem separador de milhares."}
+            </small>
           </label>
           <label>
             Área

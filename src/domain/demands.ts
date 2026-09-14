@@ -144,6 +144,22 @@ export function applyCommand(
         "Demandas concluídas ficam disponíveis apenas para consulta.",
         409,
       );
+    const amountChanged = command.input.amountCents !== demand.amountCents;
+    if (amountChanged && demand.status !== "Nova")
+      throw new DomainError(
+        "O valor não pode mudar depois de iniciada a execução.",
+        409,
+      );
+    if (amountChanged && demand.approval.status !== "Não solicitada") {
+      addEvent(
+        demand,
+        actor,
+        "approval-invalidated",
+        `Invalidou a avaliação ao mudar o valor de ${formatAmount(demand.amountCents)} para ${formatAmount(command.input.amountCents)}. É necessário reenviar.`,
+        now,
+      );
+      demand.approval = emptyApproval();
+    }
     Object.assign(demand, command.input);
     addEvent(demand, actor, "updated", "Atualizou os dados da demanda.", now);
   } else {

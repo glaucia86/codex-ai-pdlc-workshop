@@ -39,6 +39,7 @@ export const eventSchema = z.object({
     "approval-requested",
     "approval-approved",
     "approval-rejected",
+    "approval-invalidated",
   ]),
   message: z.string(),
 });
