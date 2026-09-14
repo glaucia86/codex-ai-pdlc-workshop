@@ -1,6 +1,6 @@
 # Nexo — contexto inicial
 
-Portal local de demandas internas para um workshop. A branch `main` é o produto existente; a aprovação de orçamento será adicionada durante o exercício.
+Portal local de demandas internas para um workshop. A branch `main` é o produto existente; `workshop-solution` contém a referência desenvolvida por checkpoints.
 
 ## Encontrar o código
 
@@ -35,3 +35,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Contexto da feature — consultar sob demanda
+
+- Problema e regras: `docs/feature/PRD.md`.
+- Arquitetura da mudança: `docs/feature/spec.md`.
+- Unidade de trabalho atual: `docs/feature/implementation-slice.md`.
+- Continuidade entre sessões: `docs/feature/handoff.md`, quando presente.
+- Ao validar uma entrega, a skill `validar-entrega` contém o procedimento e uma referência específica de aprovação.
+
+Preserve a diferença entre aprovação de orçamento e execução da demanda. Regras antigas de edição e movimentação continuam válidas. Não antecipe outras slices quando a instrutora delimitar a unidade atual.
