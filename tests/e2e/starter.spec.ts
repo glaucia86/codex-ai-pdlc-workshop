@@ -28,6 +28,24 @@ test("criar, editar, filtrar e concluir uma demanda pelo navegador", async ({
     .fill("1500,00");
   await page.getByRole("button", { name: "Salvar alterações" }).click();
   await expect(details.locator(".budget strong")).toContainText("1.500,00");
+  await expect(
+    details.getByRole("button", { name: "Iniciar demanda" }),
+  ).toBeDisabled();
+  await details
+    .getByRole("button", { name: "Enviar para aprovação", exact: true })
+    .click();
+  await details.getByRole("button", { name: "Fechar janela" }).click();
+  await page.getByLabel("Perfil de demonstração").selectOption("bruno");
+  await page
+    .getByRole("button", { name: "Compra do workshop", exact: true })
+    .click();
+  await details.getByRole("button", { name: "Aprovar orçamento" }).click();
+  await expect(details.locator(".approval-status")).toHaveText("Aprovada");
+  await details.getByRole("button", { name: "Fechar janela" }).click();
+  await page.getByLabel("Perfil de demonstração").selectOption("ana");
+  await page
+    .getByRole("button", { name: "Compra do workshop", exact: true })
+    .click();
   await details.getByRole("button", { name: "Iniciar demanda" }).click();
   await expect(details.locator(".badge")).toHaveText("Em andamento");
   await details.getByRole("button", { name: "Concluir demanda" }).click();

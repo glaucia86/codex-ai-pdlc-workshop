@@ -9,17 +9,44 @@ test("a demanda atravessa o fluxo inicial e registra quem agiu", async () => {
   const demand = applyCommand(db, "ana", { type: "create", input: sample });
   assert.equal(demand.status, "Nova");
   assert.equal(demand.requesterId, "ana");
-  applyCommand(db, "ana", { type: "advance", id: demand.id, version: 1 });
+  applyCommand(db, "ana", {
+    type: "request-approval",
+    id: demand.id,
+    version: demand.version,
+  });
+  applyCommand(db, "bruno", {
+    type: "decide-approval",
+    id: demand.id,
+    version: demand.version,
+    decision: "approve",
+  });
+  applyCommand(db, "ana", {
+    type: "advance",
+    id: demand.id,
+    version: demand.version,
+  });
   assert.equal(demand.status, "Em andamento");
-  applyCommand(db, "ana", { type: "advance", id: demand.id, version: 2 });
+  applyCommand(db, "ana", {
+    type: "advance",
+    id: demand.id,
+    version: demand.version,
+  });
   assert.equal(demand.status, "Concluída");
   assert.deepEqual(
     demand.history.map((event) => event.kind),
-    ["created", "started", "completed"],
+    [
+      "created",
+      "approval-requested",
+      "approval-approved",
+      "started",
+      "completed",
+    ],
   );
   assert.ok(
     demand.history.every(
-      (event) => event.actorId === "ana" && !Number.isNaN(Date.parse(event.at)),
+      (event) =>
+        ["ana", "bruno"].includes(event.actorId) &&
+        !Number.isNaN(Date.parse(event.at)),
     ),
   );
 });

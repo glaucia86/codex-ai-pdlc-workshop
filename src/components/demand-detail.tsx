@@ -36,6 +36,9 @@ export function DemandDetail({
   const requester = users.find((user) => user.id === demand.requesterId)!;
   const own = actor.id === demand.requesterId;
   const canEdit = own && demand.status !== "Concluída";
+  const canStart =
+    demand.approval.status === "Aprovada" &&
+    demand.approval.amountCents === demand.amountCents;
   return (
     <div className="detail">
       <div className="overline">
@@ -106,7 +109,11 @@ export function DemandDetail({
           </button>
         )}
         {canEdit && (
-          <button className="primary" disabled={busy} onClick={onAdvance}>
+          <button
+            className="primary"
+            disabled={busy || (demand.status === "Nova" && !canStart)}
+            onClick={onAdvance}
+          >
             {demand.status === "Nova" ? (
               <ArrowRight size={16} />
             ) : (
@@ -116,6 +123,11 @@ export function DemandDetail({
           </button>
         )}
       </div>
+      {own && demand.status === "Nova" && !canStart && (
+        <p className="quiet">
+          O orçamento atual precisa ser aprovado antes do início.
+        </p>
+      )}
       {!own && (
         <p className="quiet">
           Somente o solicitante pode editar e movimentar esta demanda.

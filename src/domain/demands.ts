@@ -66,6 +66,50 @@ export function applyCommand(
       409,
     );
   }
+  if (command.type === "decide-approval") {
+    if (actor.role !== "gestor")
+      throw new DomainError(
+        "Somente gestores podem decidir sobre o orçamento.",
+        403,
+      );
+    if (demand.requesterId === actor.id)
+      throw new DomainError(
+        "Você não pode decidir sobre a própria demanda.",
+        403,
+      );
+    if (
+      demand.status !== "Nova" ||
+      demand.approval.status !== "Pendente" ||
+      demand.approval.amountCents !== demand.amountCents
+    )
+      throw new DomainError(
+        "Não há avaliação pendente para o valor atual.",
+        409,
+      );
+    if (command.decision === "reject" && !command.reason)
+      throw new DomainError(
+        "Informe uma justificativa para rejeitar o orçamento.",
+      );
+    const approved = command.decision === "approve";
+    demand.approval = {
+      ...demand.approval,
+      status: approved ? "Aprovada" : "Rejeitada",
+      decidedAt: now,
+      decidedById: actor.id,
+      reason: approved ? null : command.reason!,
+    };
+    addEvent(
+      demand,
+      actor,
+      approved ? "approval-approved" : "approval-rejected",
+      approved
+        ? `Aprovou ${formatAmount(demand.amountCents)}.`
+        : `Rejeitou ${formatAmount(demand.amountCents)}. Justificativa: ${command.reason}`,
+      now,
+    );
+    demand.version += 1;
+    return demand;
+  }
   if (demand.requesterId !== actor.id)
     throw new DomainError(
       "Somente o solicitante pode editar ou movimentar esta demanda.",
@@ -106,6 +150,15 @@ export function applyCommand(
     if (demand.status === "Concluída")
       throw new DomainError("Esta demanda já foi concluída.", 409);
     const starting = demand.status === "Nova";
+    if (
+      starting &&
+      (demand.approval.status !== "Aprovada" ||
+        demand.approval.amountCents !== demand.amountCents)
+    )
+      throw new DomainError(
+        "O orçamento atual precisa de aprovação antes de iniciar.",
+        409,
+      );
     demand.status = starting ? "Em andamento" : "Concluída";
     addEvent(
       demand,

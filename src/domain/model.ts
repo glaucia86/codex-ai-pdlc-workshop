@@ -37,6 +37,8 @@ export const eventSchema = z.object({
     "started",
     "completed",
     "approval-requested",
+    "approval-approved",
+    "approval-rejected",
   ]),
   message: z.string(),
 });
@@ -111,6 +113,14 @@ export const commandSchema = z.discriminatedUnion("type", [
     .strict(),
   z.object({ type: z.literal("advance"), ...target }).strict(),
   z.object({ type: z.literal("request-approval"), ...target }).strict(),
+  z
+    .object({
+      type: z.literal("decide-approval"),
+      ...target,
+      decision: z.enum(["approve", "reject"]),
+      reason: z.string().trim().max(500).optional(),
+    })
+    .strict(),
 ]);
 
 export type User = z.infer<typeof userSchema>;
