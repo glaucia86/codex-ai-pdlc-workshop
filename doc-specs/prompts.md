@@ -58,3 +58,48 @@ Use apenas requisitos e IDs reais do PRD e da spec. Não copie requisitos, IDs, 
 Todos os Acceptance Criteria devem começar com `- [ ]`.
 
 Não implemente código e não altere outros arquivos.
+
+---
+
+## Prompt para implementação dos slices
+
+/tdd 
+
+Implemente exclusivamente de acordo com o arquivo: doc-specs/implementation-slices.md:
+
++ Slice S01 — Preservar dados e exigir autorização
++ Leia o arquivo 'RULES.md' como roteador de contexto, não como ordem para carregar tudo.
++ Sempre que concluir o slice, leia o arquivo 'RULES.md' em relação a mudança de modelo para podermos atualizar a pasta 'harness' (siga o que a rules definiu sobre isso) - leia sob demanda! Para evitar context rot! Mantenha o contexto atualizado e evite carregar informações desnecessárias.
++ cumpra com todos os 'Acceptance criteria' e marque todos que foram cumpridos e depois de verificar se tudo foi concluído marcar [x] os que foram implementados
+
+---
+
+## Prompt - Criar a Rules
+
+Leia integralmente o arquivo `rules.template.md` e analise a estrutura do projeto atual.
+
+Com base nesse template, crie na raiz do repositório um arquivo chamado `RULES.md`, adaptado ao projeto, mas independente de linguagem, framework, ferramenta de IA ou plataforma específica.
+> Atenção: estou usando para implementar o Codex CLI! Assim sendo o modelo para atualizar o 
+> harness será o luna! Inclui isso no RULES.md
+
+O arquivo deve funcionar como um contrato operacional para agentes de IA e definir, de forma objetiva:
+
+* como carregar contexto sem ler o repositório inteiro;
+* o que a IA pode fazer autonomamente;
+* quais alterações exigem aprovação humana;
+* o que a IA nunca deve executar;
+* limites de escopo e prevenção de mudanças não solicitadas;
+* regras de segurança, privacidade e proteção de credenciais;
+* expectativas sobre testes, validações e evidências;
+* critérios para considerar uma tarefa concluída;
+* como lidar com dúvidas, conflitos e informações ausentes;
+* ordem de precedência entre instruções e documentos.
+
+Use o `rules.template.md` apenas como referência estrutural e de boas práticas. Remova regras específicas do projeto original, como tecnologias, caminhos, integrações, features, modelos de IA e comandos particulares.
+
+Não invente convenções que não possam ser identificadas no projeto. Quando uma informação relevante não estiver disponível, registre-a como `[A DEFINIR]`.
+
+O `RULES.md` final deve ser conciso, acionável, não redundante e escrito como instruções diretas para qualquer agente de IA que trabalhe no repositório.
+
+Não altere nenhum outro arquivo.
+

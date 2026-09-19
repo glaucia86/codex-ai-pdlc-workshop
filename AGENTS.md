@@ -19,6 +19,7 @@ Use divulgação progressiva (*Progressive Disclosure*): comece por este arquivo
 | Entender o produto, o vocabulário ou a nova história | [Contexto e escopo](docs-agents/contexto.md) |
 | Localizar código ou alterar domínio, API e dados | [Arquitetura e implementação](docs-agents/arquitetura.md) |
 | Preparar o ambiente, executar ou verificar mudanças | [Execução e validação](docs-agents/validacao.md) |
+| Implementar ou retomar um slice da aprovação de orçamento | [Harness: progresso, funcionalidades, feedback e verificações](.agents/harness/README.md) |
 | Atualizar estas instruções ou acrescentar orientações | [Manutenção dos guias](docs-agents/manutencao.md) |
 
 Este arquivo orienta o trabalho; não substitui as permissões configuradas no agente.

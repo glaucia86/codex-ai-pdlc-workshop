@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "project": "Nexo — aprovação de orçamento",
+  "scope": "S00 prepara; S01–S08 permanecem sem implementação.",
+  "source_revision": "9c3cc4898ee6a1c7657499e4a70a3573f6aeef46",
+  "sources": {
+    "PRD-v1.md": {
+      "path": "doc-specs/PRD-v1.md",
+      "sha256": "d51540c8092168590f79098a66a1b6f9be28300af7399d4387588357b4b1138d"
+    },
+    "spec-v1.md": {
+      "path": "doc-specs/spec-v1.md",
+      "sha256": "2be9315d82e17e6501c9ef3e8dbcd0a37e2a86da446f6b0757b3c89e4fd6767f"
+    },
+    "implementation-slices.md": {
+      "path": "doc-specs/implementation-slices.md",
+      "sha256": "7687156182126e4e4430e294df1305b96886d7f619e59d9686952088586bee5c"
+    }
+  },
+  "gates": [
+    {
+      "id": "VAL-001",
+      "status": "pendente",
+      "decisions": {
+        "D01": "pendente",
+        "D02": "pendente",
+        "D03": "pendente",
+        "D04": "pendente",
+        "D05": "pendente",
+        "D06": "pendente",
+        "D07": "pendente"
+      },
+      "evidence": []
+    }
+  ],
+  "features": [
+    {
+      "id": "S00",
+      "title": "Preparar harness, baseline e mapa de impacto",
+      "category": "operacional",
+      "priority": 0,
+      "depends_on": [],
+      "required_gates": [],
+      "source_ids": {
+        "PRD": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "RN19",
+          "RN21"
+        ],
+        "SPEC": [
+          "CON-001",
+          "CON-002",
+          "CON-003",
+          "PLT-001",
+          "PLT-002",
+          "PLT-003",
+          "COM-001",
+          "VAL-001",
+          "VAL-003",
+          "VAL-006",
+          "VAL-008"
+        ]
+      },
+      "acceptance": [
+        "O harness possui um índice local com referências válidas ao PRD, à spec, a este plano e às instruções aplicáveis; identifica a revisão consultada e distingue decisões D01–D07 pendentes de decisões efetivamente validadas.",
+        "O mapa de impacto identifica os pontos reais de criação, edição, execução, identidade de demonstração, HTTP, transação JSON, histórico e interface, relacionando-os aos slices e testes pertinentes sem presumir que a aprovação já existe.",
+        "Os limites registram preservação de dados e seed, uso de transação e validação no backend, dependências existentes e ausência de reset, autenticação real, banco, Docker ou serviços externos.",
+        "As verificações de referência do produto atual registram execução de `npm run validate` e `npm run test:e2e`, ou impedimentos concretos para executá-las, com comandos, resultados e contexto de reprodução. Falhas anteriores ficam separadas de regressões futuras e não são ocultadas pela remoção de testes.",
+        "Os procedimentos usam arquivos temporários para integração e dados E2E isolados, mantendo porta 3100 e um worker; identificam Node.js 24, Chromium e servidor de desenvolvimento parado como condições pertinentes, sem usar os dados do participante para testes.",
+        "O registro de progresso relaciona slice → Source IDs de PRD/SPEC → verificação → evidência ou pendência. Critérios da evolução permanecem abertos até sua comprovação; sucesso da baseline não é apresentado como aceite da nova história.",
+        "Uma retomada usando somente índice, slice atual e handoff permite localizar as fontes e o próximo passo. Nenhuma regra de aprovação ou migração foi implementada em S00, e bloqueios que impeçam S01 permanecem explícitos."
+      ],
+      "verification_steps": [
+        "Na execução futura de S00, conferir links, referências, comandos do projeto e rastreabilidade do harness. Executar a baseline descrita acima no produto atual com isolamento confirmado; registrar limitações de ambiente e falhas existentes, sem exigir testes da evolução ainda não implementada. Inspecionar o diff para garantir que a preparação não alterou comportamento funcional ou dados do participante. Simular a retomada de S01 a partir do índice e seu handoff, verificando que não exige leitura integral do histórico de conversas."
+      ],
+      "passes": true,
+      "evidence": [
+        "baseline.md",
+        "progress.md",
+        "handoff.md"
+      ]
+    },
+    {
+      "id": "S01",
+      "title": "Preservar dados e exigir autorização",
+      "category": "funcional",
+      "priority": 1,
+      "depends_on": [
+        "S00"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D06",
+          "D07",
+          "RN01",
+          "RN02",
+          "RN11",
+          "RN13",
+          "RN14",
+          "RN20",
+          "RN21",
+          "C01",
+          "C03",
+          "C04",
+          "C22",
+          "C23",
+          "C34",
+          "C35",
+          "C36",
+          "C37",
+          "C38",
+          "C39"
+        ],
+        "SPEC": [
+          "REQ-001",
+          "REQ-005",
+          "REQ-008",
+          "REQ-012",
+          "REQ-014",
+          "AC-001",
+          "AC-011",
+          "AC-015",
+          "AC-016",
+          "AC-017",
+          "VAL-002",
+          "VAL-004"
+        ]
+      },
+      "acceptance": [
+        "Dados v1 nos três estados tornam-se v2: Nova / Não enviada, Em andamento dispensada e Concluída anterior à política; preservam IDs, pessoas, contador, valores, versões, datas e eventos, sem decisões fictícias.",
+        "Backup exclusivo preserva os bytes originais antes da substituição; arquivo inválido, versão desconhecida, dados adicionais não preserváveis ou falha de backup/migração produzem erro explícito sem reset ou alteração parcial.",
+        "Reiniciar sobre v2 não repete migração, cria eventos ou amplia dispensa. Arquivo ausente usa seed validada sem regravá-la; combinações v2 inconsistentes são recusadas.",
+        "Criar ou editar não envia automaticamente. Nos valores de C03, Nova não inicia sem aprovação; a interface separa execução/aprovação e orienta a necessidade de envio.",
+        "Apenas o solicitante conclui a demanda legada iniciada; valor permanece bloqueado, descrição continua editável antes da conclusão e Concluída admite somente consulta, inclusive pela API."
+      ],
+      "verification_steps": [
+        "Migração e armazenamento com arquivos temporários: preservação, backup, falhas antes do renome, releitura e seed imutável. Domínio/HTTP para bloqueio de Nova, titularidade, bloqueio monetário e transições ilegais aplicáveis. Navegador: abrir os três legados, criar Nova e concluir legado iniciado. Os estados pendente/rejeitado/inválido de C04 serão completados nos slices correspondentes, sem declarar o cenário inteiro concluído aqui."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S02",
+      "title": "Enviar ao gestor escolhido",
+      "category": "funcional",
+      "priority": 2,
+      "depends_on": [
+        "S01"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D01",
+          "RN02",
+          "RN03",
+          "RN04",
+          "RN05",
+          "RN16",
+          "RN18",
+          "RN19",
+          "RN22",
+          "RN23",
+          "C04",
+          "C07",
+          "C08",
+          "C15",
+          "C33",
+          "C39"
+        ],
+        "SPEC": [
+          "REQ-002",
+          "REQ-003",
+          "REQ-010",
+          "REQ-011",
+          "REQ-013",
+          "REQ-014",
+          "AC-003",
+          "AC-004",
+          "AC-007",
+          "AC-014",
+          "AC-017",
+          "DAT-002"
+        ]
+      },
+      "acceptance": [
+        "Selecionar gestor não cria ciclo. Enviar demanda própria Nova / Não enviada a gestor elegível cria uma pendência com valor atual, snapshots e um evento de envio; o início permanece bloqueado.",
+        "Só o solicitante envia; destino inexistente, sem papel de gestor ou igual ao solicitante é recusado. Sem gestor elegível, a interface explica a impossibilidade e preserva a demanda.",
+        "Repetir envio ao mesmo gestor com versão atual retorna `ALREADY_PENDING`/409; com versão antiga retorna conflito, sem novo ciclo, evento ou versão.",
+        "Envio fora dos estados permitidos é recusado pela API. Corpo estrito e identidade resolvida no servidor impedem atribuir dispensa, histórico, valor do ciclo ou papel por campos adulterados.",
+        "Falha antes de salvar mantém demanda/histórico anteriores; uma nova tentativa válida produz exatamente uma pendência e só há mensagem de sucesso após confirmação."
+      ],
+      "verification_steps": [
+        "Domínio e HTTP: titularidade, destinos, ausência de gestor, comandos adulterados, repetição e estados não permitidos. Armazenamento: falha real de escrita/renome e retomada de C33. E2E: criação → seleção sem envio → envio → consulta após recarga, incluindo gestor que também é solicitante. Verificar campos rotulados, teclado e mensagens legíveis."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S03",
+      "title": "Editar valor sem conservar autorização antiga",
+      "category": "funcional",
+      "priority": 3,
+      "depends_on": [
+        "S02"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D04",
+          "D06",
+          "RN09",
+          "RN10",
+          "RN11",
+          "RN13",
+          "RN16",
+          "RN17",
+          "RN19",
+          "C16",
+          "C17",
+          "C18",
+          "C19",
+          "C20",
+          "C22",
+          "C23",
+          "C24",
+          "C32"
+        ],
+        "SPEC": [
+          "REQ-006",
+          "REQ-007",
+          "REQ-008",
+          "REQ-010",
+          "REQ-011",
+          "AC-008",
+          "AC-009",
+          "AC-011",
+          "AC-014",
+          "VAL-002"
+        ]
+      },
+      "acceptance": [
+        "Aumento ou redução em pendência/aprovação mostra aviso antes de salvar e produz Reenvio necessário, preservando decisão anterior e registrando `updated` seguido de `approval_invalidated`, no mesmo instante e com uma incrementação de versão.",
+        "Restaurar valor antigo não restaura aprovação; Não enviada e Reenvio necessário mantêm seus estados ao editar valor. Após rejeição, a correção mantém a rejeição vinculada ao valor avaliado até novo envio.",
+        "Salvar representação equivalente ou alterar apenas título, descrição, área ou prioridade mantém ciclo/situação, registra edição e respeita versão e titularidade.",
+        "Valores fora da faixa, fracionários em centavos ou entradas inválidas são recusados sem invalidar a aprovação existente. Após início, inclusive legado, valor não muda; Concluída não admite edição.",
+        "Falha antes do renome mantém valor e aprovação anteriores, sem evento parcial; a interface não apresenta a invalidação como confirmada."
+      ],
+      "verification_steps": [
+        "Domínio/HTTP com todos os exemplos de C16/C19/C22/C24 e equivalências da spec 9.2. Armazenamento: C32 com falha de gravação, comparando estado e histórico relidos. E2E: pendência real → aviso → edição → Reenvio necessário; casos com fixtures aprovadas/rejeitadas devem estar identificados. A tentativa de decidir ciclo invalidado de C20 será concluída em S04/S05."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S04",
+      "title": "Aprovar e executar pelo valor autorizado",
+      "category": "funcional",
+      "priority": 4,
+      "depends_on": [
+        "S03"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D01",
+          "D03",
+          "RN03",
+          "RN04",
+          "RN05",
+          "RN07",
+          "RN08",
+          "RN09",
+          "RN11",
+          "RN12",
+          "RN14",
+          "RN15",
+          "RN17",
+          "RN18",
+          "C02",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C20",
+          "C21",
+          "C22",
+          "C25",
+          "C26",
+          "C27",
+          "C28",
+          "C39"
+        ],
+        "SPEC": [
+          "REQ-003",
+          "REQ-005",
+          "REQ-008",
+          "REQ-009",
+          "REQ-010",
+          "REQ-011",
+          "AC-002",
+          "AC-003",
+          "AC-008",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-017",
+          "VAL-005"
+        ]
+      },
+      "acceptance": [
+        "Apenas o gestor selecionado e ainda elegível aprova o ciclo pendente atual, sem justificativa obrigatória; decisão registra autor, momento e valor e mantém execução Nova.",
+        "Autoaprovação, decisão de outro gestor/perfil, ausência de envio e ciclo encerrado ou antigo são recusados, inclusive com versão atual e `cycleId` antigo. Permissões de editar, enviar e movimentar não passam ao gestor.",
+        "Só o solicitante inicia com aprovação válida para o valor atual e depois conclui. Valor fica bloqueado; não há início automático, conclusão direta de Nova, reabertura nem repetição de transição.",
+        "Invalidação real seguida de novo envio e aprovação permite início pelo novo valor e preserva ambas as decisões no histórico. Reenvio de Aprovada sem invalidação é recusado.",
+        "Repetição antiga não duplica decisão. Nas corridas aprovação/edição e início/edição com mesma versão, somente uma ação prevalece e a outra exige revisão, sem aprovação de valor antigo autorizar valor novo."
+      ],
+      "verification_steps": [
+        "E2E C02/C21 usando envios e decisões reais; demonstrar também valor bloqueado e histórico após recarga. Domínio/HTTP cobrem permissões de C05–C07, C20 e transições de C39 já disponíveis. Duas instâncias de armazenamento sobre arquivo temporário testam concorrência, ambos os desfechos em ordem controlada e repetição de C26; aprovação versus rejeição de C25 será completada em S05/S08."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S05",
+      "title": "Rejeitar, corrigir e reenviar",
+      "category": "funcional",
+      "priority": 5,
+      "depends_on": [
+        "S04"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D03",
+          "D05",
+          "RN04",
+          "RN05",
+          "RN06",
+          "RN07",
+          "RN12",
+          "RN13",
+          "RN15",
+          "RN16",
+          "RN17",
+          "RN18",
+          "RN19",
+          "C04",
+          "C05",
+          "C06",
+          "C09",
+          "C10",
+          "C11",
+          "C12",
+          "C19",
+          "C20",
+          "C25",
+          "C29",
+          "C31",
+          "C39",
+          "C42"
+        ],
+        "SPEC": [
+          "REQ-004",
+          "REQ-007",
+          "REQ-009",
+          "REQ-010",
+          "REQ-011",
+          "REQ-014",
+          "AC-003",
+          "AC-005",
+          "AC-006",
+          "AC-009",
+          "AC-012",
+          "AC-014",
+          "AC-017",
+          "SEC-005"
+        ]
+      },
+      "acceptance": [
+        "Justificativa ausente, vazia, só com espaços ou acima de 2.000 caracteres após `trim` é recusada sem decisão. Conteúdo válido é salvo como texto, com autor, instante e valor avaliado.",
+        "Só o gestor selecionado decide; autorrejeição, ciclo antigo/invalidado e rejeição fora de pendência são recusados. Rejeitar mantém demanda Nova, bloqueia início e não exclui nem conclui.",
+        "Reenviar após rejeição, com ou sem edição, ao mesmo ou a outro gestor elegível, cria novo ciclo. Corrigir valor mantém a rejeição anterior ligada ao valor antigo até o envio.",
+        "Vários ciclos preservam todas as decisões/justificativas em ordem, inclusive após reinício; qualquer perfil pode consultá-las e só aprovação atual válida autoriza início.",
+        "Aprovação e rejeição concorrentes geram uma única decisão. Falha antes de salvar rejeição mantém pendência/histórico e não informa sucesso; o texto digitado é preservado quando possível."
+      ],
+      "verification_steps": [
+        "E2E C09/C11/C12/C31/C42, incluindo dois ciclos rejeitados antes da aprovação e edição monetária/textual. Domínio/HTTP verificam limites da justificativa, papel e autoavaliação. Armazenamento cobre C25/C29 e releitura. Verificar texto sem interpretação HTML, foco, teclado e erro de justificativa legível."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S06",
+      "title": "Reencaminhar avaliação pendente",
+      "category": "funcional",
+      "priority": 6,
+      "depends_on": [
+        "S04"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D01",
+          "D02",
+          "RN02",
+          "RN03",
+          "RN04",
+          "RN16",
+          "RN17",
+          "RN18",
+          "RN22",
+          "RN23",
+          "C08",
+          "C13",
+          "C14",
+          "C15"
+        ],
+        "SPEC": [
+          "REQ-002",
+          "REQ-003",
+          "REQ-010",
+          "REQ-011",
+          "REQ-013",
+          "AC-004",
+          "AC-007",
+          "VAL-005"
+        ]
+      },
+      "acceptance": [
+        "Solicitante troca pendência para outro gestor elegível; ciclo anterior é encerrado por troca, novo ciclo fixa valor atual e há uma única pendência, uma incrementação de versão e um evento de reencaminhamento.",
+        "Gestor anterior não decide o ciclo substituído, mesmo usando versão atual com ID antigo; a interface mostra gestor atual e mantém a sequência anterior consultável.",
+        "Destino inválido, igual ao solicitante ou tentativa por terceiro preserva a pendência original. Repetir o mesmo destino não cria ciclo/evento adicional.",
+        "Troca com versão antiga ou falha antes do renome não deixa encerramento parcial nem duas pendências; a interface orienta revisão ou tentativa após confirmação do estado."
+      ],
+      "verification_steps": [
+        "Domínio/HTTP/armazenamento: C13–C15, versão atual com ciclo antigo, atomicidade e releitura. E2E: enviar a Bruno → reencaminhar a Carla → consultar destinatário/histórico → recusar tentativa de Bruno → aceitar decisão de Carla. Conferir que nenhuma tentativa recusada acrescenta decisão ao histórico."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S07",
+      "title": "Localizar avaliações do gestor",
+      "category": "funcional",
+      "priority": 7,
+      "depends_on": [
+        "S04"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "D07",
+          "RN03",
+          "RN04",
+          "RN05",
+          "RN15",
+          "RN21",
+          "C40",
+          "C41",
+          "C42"
+        ],
+        "SPEC": [
+          "REQ-014",
+          "REQ-015",
+          "AC-018",
+          "CON-004",
+          "GUD-001",
+          "VAL-007"
+        ]
+      },
+      "acceptance": [
+        "O filtro do gestor inclui apenas demandas pendentes cujo ciclo atual lhe pertence; busca, área e prioridade continuam compondo o resultado corretamente.",
+        "Ativar “Aguardando minha avaliação” desativa “Só minhas” e vice-versa, com controles coerentes. Trocar perfil desativa o novo filtro e fecha contextos de ação.",
+        "Cartões e detalhes distinguem execução e aprovação em texto, mostram valor e permitem consultar solicitante, conteúdo e histórico antes da decisão; nenhuma coluna ou indicador muda de significado.",
+        "Pelo teclado e em 360 px, o gestor filtra, abre e decide com foco visível, rótulos, retorno de foco e mensagens compreensíveis, sem depender de cor, cortar ações ou gerar rolagem horizontal da página.",
+        "Ação confirmada atualiza consulta sem requisições por cartão ou aprovação otimista; bloqueia cliques repetidos e troca de perfil enquanto a mutação está em andamento."
+      ],
+      "verification_steps": [
+        "E2E com conjuntos destinados a gestores diferentes, gestor solicitante, estados variados, busca e filtros existentes. Inspecionar requisições para verificar uma mutação e uma atualização de consulta por ação. Revisão manual de teclado, 360 px e leitura das mensagens. Na integração com S05, completar C40 com rejeição sem justificativa e C42 com decisões sucessivas."
+      ],
+      "passes": false,
+      "evidence": []
+    },
+    {
+      "id": "S08",
+      "title": "Recuperar conflitos e resultados incertos",
+      "category": "funcional",
+      "priority": 8,
+      "depends_on": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "required_gates": [
+        "VAL-001"
+      ],
+      "source_ids": {
+        "PRD": [
+          "RN17",
+          "RN18",
+          "RN19",
+          "C20",
+          "C25",
+          "C26",
+          "C27",
+          "C28",
+          "C29",
+          "C30",
+          "C31",
+          "C32",
+          "C33",
+          "C39",
+          "C40",
+          "C41",
+          "C42"
+        ],
+        "SPEC": [
+          "REQ-011",
+          "REQ-015",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-017",
+          "AC-018",
+          "GUD-001",
+          "VAL-003",
+          "VAL-005",
+          "VAL-006",
+          "VAL-007",
+          "VAL-008"
+        ]
+      },
+      "acceptance": [
+        "Em 409, a interface recarrega o estado e exige revisão explícita antes de habilitar nova decisão; não substitui silenciosamente pessoa, versão ou ciclo capturados nem reaplica edição automaticamente.",
+        "Rascunhos de justificativa/edição são preservados quando possível e distinguíveis do estado confirmado; falha antes do renome não altera estado, versão ou histórico nem apresenta sucesso.",
+        "Se POST confirmou e a consulta seguinte falhou, a interface informa que a alteração foi salva. Sem resposta conclusiva do POST, orienta consultar antes de repetir; cancelamento no navegador não é apresentado como cancelamento da transação.",
+        "Após resposta perdida e nova consulta, decisão salva permanece única; comando antigo não duplica envio, decisão ou transição. Criação não é repetida automaticamente nem ganha promessa de deduplicação geral.",
+        "Corridas decisão/decisão, decisão/edição e início/edição aceitam somente uma ação da versão inicial; ciclo antigo após troca/reenvio é recusado mesmo com versão atual, com revisão compreensível na tela.",
+        "A integração tem evidências de todos os aceites AC-001–AC-018 e cenários C01–C42, incluindo exemplos parametrizados, consulta/histórico, permissões diretas, falhas, teclado e 360 px; verificações indisponíveis permanecem explicitamente pendentes."
+      ],
+      "verification_steps": [
+        "Armazenamento com duas instâncias em arquivo temporário e ordens controladas para ambos os vencedores; comparar arquivo relido, eventos e versões. Simular falha real antes do renome separadamente da perda de resposta após persistência. E2E com duas telas, rejeição com rascunho, alteração salva seguida de falha de GET e retomada sem repetição automática.",
+        "Conferir todas as linhas da matriz abaixo e executar `npm run validate` e `npm run test:e2e` com servidor de desenvolvimento parado, dados isolados, porta 3100 e um worker no E2E. Revisar documentação afetada de arquitetura/recuperação conforme spec 7.1 na implementação futura. Conferir diff para ausência de dados do participante, reset, serviços ou alterações alheias. Não executar esses procedimentos como parte da criação deste plano."
+      ],
+      "passes": false,
+      "evidence": []
+    }
+  ]
+}
