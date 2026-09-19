@@ -15,3 +15,19 @@ e que tenha extenso conhecimento sobre o assunto que será implementado
 cenários de teste usando o Gherkin. Pois quaisquer erro nesse fluxo, pode 'travar' o processo aqui. 
 + No final gere um markdown chamado: PRD-v1.md
 + Evite de ser prolixo. Seja objetivo. Por mais que esse arquivo seja robusto.
+
+---
+
+## Criar especificação técnica
+
+/create-specification
+
+Leia o arquivo:
+
++ 'doc-specs/PRD-v1.md'
+
+E crie uma especificação técnica detalhada e robusta baseada no PRD fornecido.
+No final gere um markdown chamado: spec-v1.md
+
+Todavia, quero que você age como o melhor Principal Software Engineer com ampla experiencia em
+TypeScript e Next.js, garantindo que a especificação técnica seja precisa, eficiente e alinhada com as melhores práticas de desenvolvimento. Você sempre proverá as melhores soluções pensando numa entrega rápida, mas pensando nas boas práticas de programação, robustez, resiliência, escalamento dessa aplicação.
