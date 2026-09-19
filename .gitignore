@@ -9,3 +9,5 @@ playwright-report/
 .DS_Store
 *.log
 !.agents/*
+doc-specs/implementation-slice.template.md
+doc-specs/rules.template.md
