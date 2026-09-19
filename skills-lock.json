@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "clean-code": {
+      "source": "sickn33/agentic-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/clean-code/SKILL.md",
+      "computedHash": "ecb074627f5814074396754dd684002fdd1b9635ce08e9d2bccb692ef829b78a"
+    },
+    "code-review": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/code-review/SKILL.md",
+      "computedHash": "b4f17857c85ca60af1df7d0b623dd03c2a48419f6123e714f3d9748ca744a1bf"
+    },
+    "create-specification": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/create-specification/SKILL.md",
+      "computedHash": "9796c1d33858522eb67ea2fa864993bdad11f5d79832cca9cf64b9a47c610c09"
+    },
+    "handoff": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/handoff/SKILL.md",
+      "computedHash": "9ea2a5de5ca2d717f913356de982fdc4fe27d28a300c16598cd43a4865491008"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/tdd/SKILL.md",
+      "computedHash": "c1ed8cd854c64d4d226097255d3fa662dae4a758a1462fadd63cc10e413d88d7"
+    },
+    "to-spec": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/to-spec/SKILL.md",
+      "computedHash": "0ee8caf20fc7df94db53e76f42588fb01eee88c6f8dc97e7a3a0565be8978e74"
+    },
+    "to-tickets": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/to-tickets/SKILL.md",
+      "computedHash": "4aba8639f46b55ede011866f83e9e87ae10482b72c14848389e5801eba0b37bf"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "3f1e66e08e3d1d3feaf2a3187705022812e0bece8ff5bee80fe7cf782f26fe8b"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "6b526d013e28073246a36f99b529bc43745d30832ecfa8217b359c34f260ca6b"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
+    }
+  }
+}
