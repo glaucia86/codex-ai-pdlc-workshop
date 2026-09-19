@@ -8,4 +8,4 @@ playwright-report/
 !.env.example
 .DS_Store
 *.log
-.agents/*
+!.agents/*
