@@ -31,3 +31,30 @@ No final gere um markdown chamado: spec-v1.md
 
 Todavia, quero que você age como o melhor Principal Software Engineer com ampla experiencia em
 TypeScript e Next.js, garantindo que a especificação técnica seja precisa, eficiente e alinhada com as melhores práticas de desenvolvimento. Você sempre proverá as melhores soluções pensando numa entrega rápida, mas pensando nas boas práticas de programação, robustez, resiliência, escalamento dessa aplicação.
+
+----
+
+## Implementação Slice
+
+/to-tickets
+
+Leia 
+
++ `PRD-v1.md`
++  `spec-v1.md` 
++ e use `implementation-slice.template.md` apenas como referência de estrutura. NÃO copie conteúdo diretamente. Foque somente na estrutura para criar o output definidido abaixo.
+
+Crie o arquivo: `implementation-slices.md` com slices:
+
+- em ordem cronológica e por dependências;
+- verticais, pequenos e implementáveis;
+- seguindo o conceito de Smart Zone vs Dumb Zone. Se você não souber, pesquise na internet sobre o conceito, com resultado esperado, dependências, escopo, Acceptance Criteria, testes/verificação e handoff;
+- com Source IDs separados que sejam combinados entre os arquivos do  `PRD:` e `SPEC:`, pensando
+no conceito de Context Graph e Contexto Management. Vislumbrando não entrarmos no fenômeno
+Lost in the Middle para a implementação desses slices.
+
+Use apenas requisitos e IDs reais do PRD e da spec. Não copie requisitos, IDs, evidências, status ou checkboxes concluídos do exemplo.
+
+Todos os Acceptance Criteria devem começar com `- [ ]`.
+
+Não implemente código e não altere outros arquivos.
